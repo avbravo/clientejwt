@@ -8,14 +8,11 @@ package com.avbravo.clientejwt;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import javax.ws.rs.core.Response;
 import org.apache.http.NameValuePair;
@@ -68,11 +65,10 @@ public class ClienteJWT {
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                     CloseableHttpResponse response = httpClient.execute(post)) {
                 token = EntityUtils.toString(response.getEntity());
-                System.out.println("Tokens= ");
-                System.out.println("----------------------------------------");                
+                System.out.println("--------------Tokens--------------------------");                
                 System.out.println(token);
                 System.out.println("----------------------------------------");
-                System.out.println(EntityUtils.toString(response.getEntity()));
+             
             }
         } catch (Exception ex) {
             System.out.println("getJWT() " + ex.getLocalizedMessage());
@@ -81,12 +77,12 @@ public class ClienteJWT {
     }
 
     public Response connect() throws Exception {
-
+       
         Client client = ClientBuilder.newClient();
         WebTarget echoEndpointTarget = ClientBuilder.newClient().target("http://localhost:8080/web-app/resources/ping/secure");
 
         Response response = echoEndpointTarget.request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, "Bearer " + getTokens()).get();
-
+ System.out.println("|-----------------connet()--------------");
         if (response.getStatus() == HttpURLConnection.HTTP_OK) {
             String reply = response.readEntity(String.class);
             System.out.println("ok " + reply);
